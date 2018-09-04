@@ -5,7 +5,12 @@ import java.util.{Currency, Locale}
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import fr.rad.chap1.Guidebook.Inquiry
 import fr.rad.chap1.Tourist.{Guidance, Start}
+import akka.routing.FromConfig
+import akka.util.Timeout
 
+import scala.concurrent.duration._
+import scala.util.{Failure, Success}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 object Guidebook {
   case class Inquiry(code:String)
@@ -55,5 +60,32 @@ object Main extends App {
 
   tourist ! Start(Locale.getISOCountries)
 
+}
+
+object TouristMain extends App {
+  val system: ActorSystem = ActorSystem("TouristSystem")
+
+  val path = "akka.tcp://BookSystem@127.0.0.1:2553/user/guidebook"
+
+  implicit val timeout :Timeout = Timeout(5, SECONDS)
+
+  system.actorSelection(path).resolveOne().onComplete{
+    case Success(guidebook) => val tourProps = Tourist.props(guidebook)
+      val tourist: ActorRef = system.actorOf(tourProps)
+
+      tourist ! Start(Locale.getISOCountries)
+
+    case Failure(exception) => println(exception)
+  }
+}
+
+object GuidebookMain extends App {
+  val system: ActorSystem = ActorSystem("BookSystem")
+
+  val guideProps: Props = Props[Guidebook]
+
+  val routerProps: Props = FromConfig.props(guideProps)
+
+  val guidebook: ActorRef = system.actorOf(routerProps, "guidebook")
 }
 
