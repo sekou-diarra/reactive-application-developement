@@ -1,4 +1,4 @@
-name := "reactiv-eapplication-development"
+name := "reactive-application-development"
 
 version := "0.1"
 
