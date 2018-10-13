@@ -1,10 +1,10 @@
-package fr.rad.chap1
+package fr.rad.part1.chap1
 
 import java.util.{Currency, Locale}
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
-import fr.rad.chap1.Guidebook.Inquiry
-import fr.rad.chap1.Tourist.{Guidance, Start}
+import fr.rad.part1.chap1.Guidebook.Inquiry
+import fr.rad.part1.chap1.Tourist.{Guidance, Start}
 import akka.routing.FromConfig
 import akka.util.Timeout
 

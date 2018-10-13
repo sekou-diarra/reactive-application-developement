@@ -1,10 +1,10 @@
-package fr.rad.chap1
+package fr.rad.part1.chap1
 
 import java.util.Locale
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.routing.FromConfig
-import fr.rad.chap1.Tourist.Start
+import fr.rad.part1.chap1.Tourist.Start
 
 object TouristRouter extends App{
 

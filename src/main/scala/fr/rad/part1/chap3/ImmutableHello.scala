@@ -1,4 +1,4 @@
-package fr.rad.chap3
+package fr.rad.part1.chap3
 
 import akka.actor._
 import akka.event.Logging
@@ -43,14 +43,14 @@ class GreetingsActor extends Actor {
 
   override def receive = hello
 
-  private val hello = {
+  def hello:Receive = {
     case msg: Hello => log.info(s"Received.....")
       sender() ! Hello("Greetings Hello")
       context.become(goodbye)
     case _ => log.info("receveid unknow message")
   }
 
- private val goodbye = {
+ private val goodbye:Receive = {
     case msg: GoodBye => log.info(s"Received goodbye: $msg")
       sender() ! Hello("Greetings Goodbye")
       context.become(hello)
